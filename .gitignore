@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+VITE_SUPABASE_URL=https://gmmizaceiypnuhkonlng.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_-OHZGj7rY9XaPQRK9wn2-A_rNW8vGQO

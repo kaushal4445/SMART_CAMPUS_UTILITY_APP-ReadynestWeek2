@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Search as SearchIcon,
   FileDown,
@@ -108,6 +108,19 @@ function BrandMark() {
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   const navigate = useNavigate();
   const { darkMode, setDarkMode } = useTheme();
 
@@ -136,14 +149,18 @@ function Sidebar() {
       </button>
 
       {/* Sidebar */}
-      <aside
-        className={`
-          fixed left-0 top-0 z-50 flex min-h-screen w-64 flex-col
-          bg-slate-900 text-white dark:bg-slate-950
-          transition-transform duration-300 lg:static
-          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
+ <aside
+  className={`
+    fixed left-0 top-0 z-50
+    h-screen max-w-[85vw] w-72
+    flex flex-col
+    overflow-hidden
+    bg-slate-900 text-white dark:bg-slate-950
+    transition-transform duration-300 ease-in-out
+    lg:static lg:h-screen lg:translate-x-0
+    ${isOpen ? "translate-x-0" : "-translate-x-full"}
+  `}
+>  
         {/* Logo */}
         <div className="flex items-center justify-between gap-2.5 border-b border-white/10 p-5">
           <div className="flex items-center gap-2.5">
@@ -162,7 +179,7 @@ function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-5">
+  <nav className="flex-1 overflow-y-auto px-3 py-5 pb-32">    
           {sections.map((section) => (
             <div key={section.label}>
               <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
@@ -227,22 +244,24 @@ function Sidebar() {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center gap-2 border-t border-white/10 px-5 py-3.5 text-xs text-slate-500">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-teal-400" />
-          </span>
-          Smart Campus v1.0
-        </div>
+      <div className="sticky bottom-0 border-t border-white/10 bg-slate-900 dark:bg-slate-950 px-5 py-3.5 text-xs text-slate-500">
+  <div className="flex items-center gap-2">
+    <span className="relative flex h-1.5 w-1.5">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
+      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-teal-400" />
+    </span>
+    Smart Campus v1.0
+  </div>
+</div>
       </aside>
 
       {/* Mobile Overlay */}
       {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-        />
-      )}
+  <div
+    onClick={() => setIsOpen(false)}
+    className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+  />
+)}
     </>
   );
 }

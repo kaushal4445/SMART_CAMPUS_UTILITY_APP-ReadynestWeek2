@@ -11,60 +11,45 @@ function AdminRoute({ children }) {
   }, []);
 
   async function checkAdmin() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    if (!user) {
-      setLoading(false);
-      return;
-    }
+      console.log("Current User:", user);
 
-async function checkAdmin() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
-  console.log("Current User:", user);
+      const { data, error } = await supabase
+        .from("admins")
+        .select("*")
+        .eq("user_id", user.id);
 
-  if (!user) {
-    setLoading(false);
-    return;
-  }
+      console.log("Admin Query Result:", data);
+      console.log("Admin Query Error:", error);
 
-  const { data, error } = await supabase
-    .from("admins")
-    .select("*")
-    .eq("user_id", user.id);
-
-  console.log("Admin Query Result:", data);
-  console.log("Admin Query Error:", error);
-
-  if (data && data.length > 0) {
-    setIsAdmin(true);
-  }
-
-  setLoading(false);
-}
-
-    const { data } = await supabase
-      .from("admins")
-      .select("*")
-      .eq("user_id", user.id)
-      .single();
-
-    if (data) {
-      setIsAdmin(true);
+      if (data && data.length > 0) {
+        setIsAdmin(true);
+      }
+    } catch (error) {
+      console.error(error);
     }
 
     setLoading(false);
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
-  return isAdmin ? children : <Navigate to="/dashboard" />;
+  return isAdmin ? children : <Navigate to="/dashboard" replace />;
 }
 
 export default AdminRoute;

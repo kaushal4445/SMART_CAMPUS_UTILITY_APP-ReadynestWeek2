@@ -126,36 +126,109 @@ The app uses **Supabase Authentication** with the following features:
 
 ---
 
-## 🛡 Admin Panel
+## 🔐 Admin Access
 
-The app includes a protected **Admin Dashboard** accessible only to authorized users.
+> **The Smart Campus Utility App includes a protected Admin Panel that can only be accessed by authorized admin users.**
 
-### Accessing the Admin Panel
+---
 
-1. Log in with admin credentials
-2. Open the sidebar menu
-3. Navigate to **Account → Admin**
+### 🗝 Admin Login Credentials
 
-> Non-admin users attempting to access this route are automatically redirected to the Dashboard.
+> ⚠️ **These credentials are provided for demonstration and testing purposes only.**
+> In a production environment, admin credentials should be secured and never exposed publicly.
 
-### Admin Authorization Flow
-
-```
-Login → Supabase Auth → Check admins table → AdminRoute guard → Dashboard
-                                                      ↓
-                                         Redirect to /dashboard (non-admins)
-```
-
-### Demo Credentials
-
-> ⚠️ **For testing and demonstration only.**
-
-```
+```text
 Email:    koko@gmail.com
 Password: 852852
 ```
 
-> In production, never expose credentials publicly. Use environment variables, RBAC, and Supabase Row Level Security (RLS).
+---
+
+### 🚪 Accessing the Admin Panel
+
+Follow these steps to access the Admin Dashboard:
+
+**Step 1** — Log in using the admin credentials provided above.
+
+**Step 2** — Open the **sidebar menu** from the left navigation.
+
+**Step 3** — Navigate to:
+
+```
+Account
+   └── Admin
+```
+
+**Step 4** — Click on **Admin** to open the Admin Dashboard.
+
+---
+
+### 🔄 Authorization Behavior
+
+| User Type | Access | Behavior |
+|-----------|--------|----------|
+| ✅ **Admin user** | Granted | Full access to the Admin Dashboard |
+| ❌ **Non-admin user** | Denied | Automatically redirected to the Dashboard |
+
+- ✅ Users logged in with the admin account **can access** the Admin Dashboard.
+- ❌ Non-admin users **cannot access** the Admin Dashboard.
+- 🔄 If a non-admin user clicks the **Admin** option in the sidebar, they will be **automatically redirected** to the **Dashboard** page.
+- 🔒 Admin access is verified through **Supabase authentication** and the `admins` table.
+
+**Authorization Flow:**
+
+```
+User Login
+    │
+    ▼
+Supabase Auth ──► Session Created
+    │
+    ▼
+Check `admins` Table
+    │
+    ├── ✅ Admin Found ──► AdminRoute Guard ──► Admin Dashboard ✅
+    │
+    └── ❌ Not Admin ───► Redirect to /dashboard 🔄
+```
+
+---
+
+### ⚙️ Admin Features
+
+The Admin Dashboard provides the following capabilities:
+
+| Feature | Description |
+|---------|-------------|
+| 👥 **User Management** | View all registered users, manage accounts, delete users |
+| 📢 **Notice Management** | Create new campus notices, delete existing notices |
+| 📊 **System Analytics** | View platform-wide usage statistics and insights |
+| 🏫 **Campus Data Management** | Manage campus-related data and configurations |
+| 📡 **Application Monitoring** | Monitor system health and application status |
+| 🛡 **Protected Admin Access** | Role-based access control via Supabase + `AdminRoute` |
+
+---
+
+### 🔒 Security Implementation
+
+Admin authorization is enforced through multiple layers:
+
+```
+┌─────────────────────────────────────────────┐
+│           Security Architecture             │
+├─────────────────────────────────────────────┤
+│  1. Supabase Authentication  (Identity)     │
+│  2. admins table lookup      (Role Check)   │
+│  3. AdminRoute component     (Route Guard)  │
+│  4. Protected API calls      (Backend RLS)  │
+└─────────────────────────────────────────────┘
+```
+
+> ⚠️ **Production Warning:** In a real production environment:
+> - Never expose admin credentials publicly
+> - Store secrets in environment variables (`.env`)
+> - Implement full Role-Based Access Control (RBAC)
+> - Enable Supabase Row Level Security (RLS)
+> - Use multi-factor authentication (MFA) for admin accounts
 
 ---
 

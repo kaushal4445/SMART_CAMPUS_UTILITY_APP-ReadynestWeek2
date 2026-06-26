@@ -16,6 +16,14 @@
 
 *Manage academics, productivity, campus notices, AI assistance, analytics, and much more — all from one platform.*
 
+<br/>
+
+### 🚀 [Try the Live Demo →](https://smart-campus-utility-app-readynest.vercel.app/)
+
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Try%20it%20Now-brightgreen?style=for-the-badge)](https://smart-campus-utility-app-readynest.vercel.app/)
+
+> **No setup required** — click the button above to explore the app instantly in your browser.
+
 </div>
 
 ---
